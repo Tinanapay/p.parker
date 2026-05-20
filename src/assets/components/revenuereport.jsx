@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import "../../styles/rev.css";
 import vector from "../../assets/vector.svg";
 
-function RevenueReport() {
+function RevenueReport({ isOpen, onClose }) {
   const [todayRevenue, setTodayRevenue] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const perPage = 120;
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const start = (page - 1) * perPage;
+  const paginated = transactions.slice(start, start + perPage);
+  const totalPages = Math.ceil(transactions.length / perPage);
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("transactions")) || [];
@@ -19,7 +26,24 @@ function RevenueReport() {
     setTodayRevenue(total);
   }, []);
 
+const handleLogout = () => {
+  setShowLogoutConfirm(true);
+};
+
+const confirmLogout = () => {
+  localStorage.clear();
+  navigate("/");
+};
+
+  useEffect(() => {
+    if (isOpen) setPage(1);
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
 return (
+  <div className="modal-overlay" onClick={onClose}>
+    <div className="report-modal1" onClick={(e) => e.stopPropagation()}>
   <div className="report-box">
     <div className="total">
       <p className="label">Today's Revenue</p>
@@ -42,7 +66,7 @@ return (
             </tr>
           </thead>
           <tbody>
-            {transactions.map((t, i) => (
+           {paginated.map((t, i) => (
               <tr key={i}>
                 <td>#{t.slotId}</td>
                 <td>{t.timeIn}</td>
@@ -54,9 +78,32 @@ return (
           </tbody>
         </table>
       )}
+      <div className="pagination">
+  <button
+    disabled={page === 1}
+    onClick={() => setPage((p) => p - 1)}
+  >
+    Prev
+  </button>
+
+  <span>
+    Page {page} / {totalPages || 1}
+  </span>
+
+  <button
+    disabled={page === totalPages}
+    onClick={() => setPage((p) => p + 1)}
+  >
+    Next
+  </button>
+</div>
+        </div>
+      </div>
     </div>
   </div>
 );
+
 }
+
 
 export default RevenueReport;

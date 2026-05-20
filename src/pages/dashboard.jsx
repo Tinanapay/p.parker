@@ -1,17 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import "../styles/admin.css";
 import AdminDashboard from "./admindashboard.jsx";
+import RevenueReport from "../assets/components/RevenueReport";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const [openRevenue, setOpenRevenue] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.clear();
     navigate("/");
   };
 
   return (
     <div>
+
       {/* HEADER */}
       <div className="header">
         <div className="header-text">
@@ -19,14 +29,60 @@ function Dashboard() {
         </div>
 
         <div className="header-actions">
-          <button className="logout-btn" onClick={handleLogout}>
-            
+
+          <button
+            className="revenue-button"
+            onClick={() => setOpenRevenue(true)}
+          >
+            Revenue
           </button>
+
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+
         </div>
       </div>
 
+      {/* REVENUE MODAL */}
+      <RevenueReport
+        isOpen={openRevenue}
+        onClose={() => setOpenRevenue(false)}
+      />
+
+      {/* LOGOUT CONFIRM MODAL */}
+      {showLogoutConfirm && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowLogoutConfirm(false)}
+        >
+          <div
+            className="confirm-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            <h3>Confirm Logout</h3>
+            <h3>Are you sure you want to log out?</h3>
+
+            <div className="confirm-buttons">
+
+              <button onClick={() => setShowLogoutConfirm(false)}>
+                Cancel
+              </button>
+
+              <button onClick={confirmLogout}>
+                Yes, Logout
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
       {/* MAIN CONTENT */}
       <AdminDashboard />
+
     </div>
   );
 }

@@ -1,16 +1,91 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+
+import { loginUser } from "../api/api";
+
 import "../styles/login.css";
+
 import car from "../assets/car.svg";
 import vector from "../assets/vector.svg";
 
+
+
 function Login() {
-  const [email, setEmail] = useState("");
+
+  // ==========================
+  // FORM STATES
+  // ==========================
+  const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
-  const DEV_MODE = true;
+
+
+  // ==========================
+  // LOGIN SUBMIT
+  // ==========================
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      // send login request to backend
+      const data = await loginUser({
+        full_name,
+        password
+      });
+
+
+      // ==========================
+      // SUCCESS
+      // ==========================
+      if (data.status === "success") {
+
+        // save jwt token
+        localStorage.setItem(
+          "token",
+          data.token
+        );
+
+        // save user info
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.user)
+        );
+
+        localStorage.setItem(
+          "auth",
+          "true"
+        );
+
+        // redirect to home
+        navigate("/home");
+
+      }
+
+      // ==========================
+      // FAILED LOGIN
+      // ==========================
+      else {
+
+        alert(data.message);
+      }
+
+    }
+
+    // ==========================
+    // SERVER ERROR
+    // ==========================
+    catch (error) {
+
+      console.error(error);
+
+      alert("Login error");
+    }
+  };
+
 
   // DEV ACCESS (instant admin login)
   const handleDevAccess = () => {
@@ -22,77 +97,96 @@ function Login() {
 
     navigate("/home"); 
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost/react-auth/login.php",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      if (response.data.success) {
-        localStorage.setItem("auth", "true");
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-
-        navigate("/home");
-      } else {
-        alert(response.data.message);
-      }
-    } catch (error) {
-      alert("Login error");
-    }
-  };
-
   return (
     
+    <div className="login-page">
 
-  <div className="login-page">
+<button
+  className="dev-btn"
+  onClick={handleDevAccess}
+  type="button"
+>
+  Dev Access
+</button>
+      {/* BACKGROUND */}
+      <div className="illusion"></div>
 
-  {/* im for testinggg */}
-      {DEV_MODE && (
-        <button onClick={handleDevAccess} style={{ marginBottom: "10px" }}>
-          Dev Admin Access
-        </button>
-      )}
+      <img
+        src={car}
+        className="car-bg"
+        alt="car"
+      />
 
-    <div className="illusion"></div>
-
-   <img src={car} className="car-bg" alt="car" />
-   <img src={vector} className="vector" alt="yellow" /> 
-
-    <div className="login-container">
-
-      <h1 className="title" >P.Parkers</h1>
-
-      <form onSubmit={handleSubmit} className="login-box">
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
+      <img
+        src={vector}
+        className="vector"
+        alt="yellow"
+      />
 
 
-        <button className="btnbtn" type="submit">
-          Login
-        </button>
-      </form>
+      {/* LOGIN CONTAINER */}
+      <div className="login-container">
 
-      <p>
-        Don’t have an account? <Link to="/register">Register</Link>
-      </p>
+        <h1 className="title">
+          P.Parkers
+        </h1>
 
-    
-    </div>
+
+        {/* LOGIN FORM */}
+        <form
+          onSubmit={handleSubmit}
+          className="login-box"
+        >
+
+          {/* FULL NAME */}
+          <input
+
+            value={full_name}
+
+            onChange={(e) =>
+              setFullName(e.target.value)
+            }
+
+            placeholder="Full Name"
+          />
+
+
+          {/* PASSWORD */}
+          <input
+
+            type="password"
+
+            value={password}
+
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+
+            placeholder="Password"
+          />
+
+
+          {/* LOGIN BUTTON */}
+          <button
+            className="btnbtn"
+            type="submit"
+          >
+            Login
+          </button>
+
+        </form>
+
+
+        {/* REGISTER LINK */}
+        <p>
+          Don’t have an account?
+          {" "}
+          <Link to="/register">
+            Register
+          </Link>
+        </p>
+
+      </div>
 
     </div>
   );

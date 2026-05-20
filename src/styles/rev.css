@@ -66,3 +66,12 @@
   font-size: 14px;
   color: #aaa;
 }
+
+.report-modal1 {
+  width: 100%;
+  max-width: 1000px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 20px;
+}

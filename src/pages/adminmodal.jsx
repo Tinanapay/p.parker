@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/admin.css";
 
-
 function AdminLoginModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,9 +11,8 @@ function AdminLoginModal({ isOpen, onClose }) {
 
   const navigate = useNavigate();
 
-  const DEV_MODE = true; // toggle here
+  const DEV_MODE = true;
 
-  //  DEV BYPASS (safe version)
   const handleDevAccess = () => {
     localStorage.setItem("auth", "true");
     localStorage.setItem(
@@ -23,7 +21,7 @@ function AdminLoginModal({ isOpen, onClose }) {
     );
 
     onClose();
-    navigate("/admin"); //  go to dashboard page
+    navigate("/admin");
   };
 
   if (!isOpen) return null;
@@ -39,12 +37,12 @@ function AdminLoginModal({ isOpen, onClose }) {
         { headers: { "Content-Type": "application/json" } }
       );
 
-            if (response.data.success) {
+      if (response.data.success) {
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
         onClose();
-        navigate("/dashboard"); //  go to dashboard page
+        navigate("/dashboard");
       } else {
         setError(response.data.message || "Login failed");
       }
@@ -56,43 +54,45 @@ function AdminLoginModal({ isOpen, onClose }) {
   };
 
   return (
-  <div className="modal-overlay">
-    <div className="modal-box">
-      <h2>Admin Login</h2>
+    <div className="modal-overlay">
+      <div className="modal-box">
+        <h2>Admin Login</h2>
 
-      {/*  DEV BUTTON (temporary backdoor) */}
-      {DEV_MODE && (
-        <button onClick={handleDevAccess} style={{ marginBottom: "10px" }}>
-          Dev Enter Admin
-        </button>
-      )}
+        {DEV_MODE && (
+          <button onClick={handleDevAccess}>
+            Dev Enter Admin
+          </button>
+        )}
 
-      <input className="in"
-        placeholder="admin "
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          className="in"
+          placeholder="admin email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input  className="in"
-        placeholder="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          className="in"
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-     
-     
-       <div className="devgrp">
-      <button className="log" onClick={handleLogin} disabled={loading}>
-        {loading ? "Logging in..." : "Login"}
-      </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button className="close" onClick={onClose}>Close</button>
+        <div className="devgrp">
+          <button className="log" onClick={handleLogin} disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          <button className="close" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
     </div>
-    </div>
-  </div>
-);
+  );
 }
 
 export default AdminLoginModal;
