@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { loginUser } from "../api/api";
+
 
 import "../styles/login.css";
 

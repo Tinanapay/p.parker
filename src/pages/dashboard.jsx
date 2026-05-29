@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import "../styles/admin.css";
 import AdminDashboard from "./admindashboard.jsx";
-import RevenueReport from "../assets/components/RevenueReport";
+import Report from "../assets/components/report.jsx";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function Dashboard() {
             className="revenue-button"
             onClick={() => setOpenRevenue(true)}
           >
-            Revenue
+            Report
           </button>
 
           <button className="logout-btn" onClick={handleLogout}>
@@ -44,13 +44,13 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* REVENUE MODAL */}
-      <RevenueReport
+      {/* REPORT MODAL */}
+      <Report
         isOpen={openRevenue}
         onClose={() => setOpenRevenue(false)}
       />
 
-      {/* LOGOUT CONFIRM MODAL */}
+      {/* LOGOUT CONFIRM */}
       {showLogoutConfirm && (
         <div
           className="modal-overlay"

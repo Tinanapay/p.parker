@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/admin.css";
 import topview from "../assets/topview2.png";
-import RevenueReport from "../assets/components/revenuereport";
+import Report from "../assets/components/report";
 import vector from "../assets/vector.svg";
 import SlotDetailsModal from "../assets/components/SlotDetailsModal.jsx";
 
@@ -117,7 +117,7 @@ function AdminDashboard() {
   return (
     <div className="parking-wrapper">
 
-      <RevenueReport />
+      <Report />
 
       <img src={vector} className="yellow" alt="yellow" />
 
