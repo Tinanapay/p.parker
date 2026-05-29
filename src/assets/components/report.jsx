@@ -127,14 +127,14 @@ function Report({ isOpen, onClose }) {
         {/* =========================
             BOOKINGS TABLE UI
         ========================== */}
-        <div className="report-box">
-          <h3>Bookings</h3>
+       <div className="report-box bookings-report">
+        <h3>Bookings</h3>
 
           {bookings.length === 0 ? (
             <p>No bookings yet</p>
           ) : (
             <>
-              <table>
+             <table className="tx-table">
                 <thead>
                   <tr>
                     <th>Slot</th>
@@ -155,25 +155,25 @@ function Report({ isOpen, onClose }) {
               </table>
 
               {/* PAGINATION CONTROLS */}
-              <div className="pagination">
-                <button
-                  disabled={page === 1}
-                  onClick={() => setPage(p => p - 1)}
-                >
-                  Prev
-                </button>
+                  <div className="report-pagination">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+          >
+            Prev
+          </button>
 
-                <span>
-                  Page {page} / {totalPages || 1}
-                </span>
+          <span>
+            Page {page} / {totalPages || 1}
+          </span>
 
-                <button
-                  disabled={page === totalPages}
-                  onClick={() => setPage(p => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Next
+          </button>
+        </div>
             </>
           )}
         </div>

@@ -37,9 +37,11 @@
 }
 .tx-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 14px;
 }
+
 .tx-table th {
   text-align: left;
   font-size: 12px;
@@ -52,16 +54,27 @@
   border-bottom: 1px solid #222;
   color: #fff5f5;
 }
+
+.tx-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
 .tx-table tr:last-child td {
   border-bottom: none;
 }
+
 .amount-cell {
   font-weight: 500;
-  text-align: right;
+  text-align: center;
 }
+
 .tx-table th:last-child {
-  text-align: right;
+  text-align: center;
 }
+
 .empty {
   font-size: 14px;
   color: #aaa;
@@ -75,4 +88,75 @@
   border-radius: 12px;
   padding: 20px;
   gap: 10%;
+}
+
+.report-pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.report-pagination button {
+  width: auto;
+  min-width: 70px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* REPORT LAYOUT */
+.report-modal1 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* BOOKINGS SECTION */
+.bookings-report {
+  display: block;
+}
+
+.bookings-report h3 {
+  margin-bottom: 15px;
+}
+
+/* PAGINATION */
+.report-pagination {
+  width: 100%;
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-pagination button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.report-pagination span {
+  font-weight: 400;
+}
+
+.bookings-report {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 95%;
+}
+
+.bookings-report table {
+  width: 100%;
+}
+
+.bookings-report .report-pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
